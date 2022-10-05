@@ -15,7 +15,7 @@ Stack Size      Total Logprob of TM
 
 ### Reordering Decoder Results :
 ```
-   Total Logprob of TM - -1384.609459
+   Total Logprob of TM = -1384.609459
 ```
 
 ## Collaborators -
