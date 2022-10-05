@@ -18,6 +18,10 @@ Stack Size      Total Logprob of TM
    Total Logprob of TM - -1384.609459
 ```
 
+## Collaborators -
+Sandipan Majhi, MSE Computer Science, Johns Hopkins University
+Sakshi Patil, MSE Computer Science, Johns Hopkins University (https://github.com/skpatil1301)
+
 ## Code Information -
 
 There are two python programs here (-h for usage):
