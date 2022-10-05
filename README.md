@@ -20,7 +20,7 @@ Stack Size      Total Logprob of TM
 
 ## Collaborators -
 Sandipan Majhi, MSE Computer Science, Johns Hopkins University\
-Sakshi Patil, MSE Computer Science, Johns Hopkins University (https://github.com/skpatil1301)\
+Sakshi Patil, MSE Computer Science, Johns Hopkins University (https://github.com/skpatil1301)
 
 ## Code Information -
 
