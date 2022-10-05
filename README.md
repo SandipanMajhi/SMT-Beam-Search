@@ -5,7 +5,7 @@ There are two python programs here (-h for usage):
 
 These commands work in a pipeline. For example:
 
-    > python decode | python compute-model-score
+    > python decoder.py | python compute-model-score
 
 There is also a module:
 
