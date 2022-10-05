@@ -27,11 +27,15 @@ Sakshi Patil, MSE Computer Science, Johns Hopkins University (https://github.com
 There are two python programs here (-h for usage):
 
 - `decode` translates input sentences from French to English.
-- `grade` computes the model score of a translated sentence.
+- `compute-model-score` computes the model score of a translated sentence.
 
 These commands work in a pipeline. For example:
 
-    > python decoder.py | python compute-model-score
+    > python3 reordering_decoder.py | python3 compute-model-score
+
+Just to get the translated sentences : 
+
+    > python3 reordering_decoder.py
 
 There is also a module:
 
