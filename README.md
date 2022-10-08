@@ -35,13 +35,13 @@ There are two python programs here (-h for usage):
 These commands work in a pipeline. For example:
 
     > python3 reordering_decoder.py | python3 compute-model-score
-    > python3  | python3 compute-model-score
+    > python3 coverage_decoder.py | python3 compute-model-score
 
 To change the number of translations per phrase use -k like the following,
-    > python3 decode -k 32 | python3 compute-model-score
+    > python3 reordering_decoder.py -k 32 | python3 compute-model-score
 
 To change the stack size limit use -s like the following,
-    > python3 decode -s 500 | python3 compute-model-score
+    > python3 reordering_decoder.py -s 500 | python3 compute-model-score
 
 
 There is also a module:
