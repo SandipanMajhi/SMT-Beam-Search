@@ -38,7 +38,7 @@ Stack Size limit s (k = 32)     Logprob (tm+lm)
     Model                       Logprob (tm+lm)
     Baseline                    -1354.6421
     Swap Reordering Model       -1300.526
-    **Cover Model**                 **-1240.3612**
+    Cover Model                 -1240.3612
 
 
 ```
