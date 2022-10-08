@@ -3,15 +3,14 @@ import optparse
 import sys
 import models
 from collections import namedtuple
-import copy
 
 optparser = optparse.OptionParser()
 optparser.add_option("-i", "--input", dest="input", default="data/input", help="File containing sentences to translate (default=data/input)")
 optparser.add_option("-t", "--translation-model", dest="tm", default="data/tm", help="File containing translation model (default=data/tm)")
 optparser.add_option("-l", "--language-model", dest="lm", default="data/lm", help="File containing ARPA-format language model (default=data/lm)")
 optparser.add_option("-n", "--num_sentences", dest="num_sents", default=sys.maxsize, type="int", help="Number of sentences to decode (default=no limit)")
-optparser.add_option("-k", "--translations-per-phrase", dest="k", default=16, type="int", help="Limit on number of translations to consider per phrase (default=16)")
-optparser.add_option("-s", "--stack-size", dest="s", default=1500, type="int", help="Maximum stack size (default=256)")
+optparser.add_option("-k", "--translations-per-phrase", dest="k", default=1, type="int", help="Limit on number of translations to consider per phrase (default=1)")
+optparser.add_option("-s", "--stack-size", dest="s", default=1, type="int", help="Maximum stack size (default=1)")
 optparser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False,  help="Verbose mode (default=off)")
 opts = optparser.parse_args()[0]
 
@@ -22,6 +21,11 @@ french = [tuple(line.strip().split()) for line in open(opts.input).readlines()[:
 ####### Functions ##########
 
 def expand_hypothesis(f_sent, hyp, pstart, pend):
+  '''
+    This function looks for the multiple possible hypothesis after a hypothesis. The expansion depends on the stack size
+    cover : sets the bit of the words in the phrases when it is aligned
+    hy_sets : combination of all the expanded hypothesis
+  '''
   ### the translation tables does not have any translation for it or it is already translated
   if f_sent[pstart : pend ] not in tm: 
     return None
@@ -49,6 +53,39 @@ def expand_hypothesis(f_sent, hyp, pstart, pend):
 
   return hyp_sets
 
+def left_neighbour_hypothesis(f, h, stacks):
+  '''
+  Checks the expansion of hypothesis towards the left side neighbours of the predecessor phrase
+  ph_len : length of the phrase covered by the hypothesis
+  '''
+  for i in range(0, h.ph_start):
+    for j in range(i+1, h.ph_start + 1):
+      expanded_hyps = expand_hypothesis(f,h,i,j)
+      if expanded_hyps:
+        for hyp in expanded_hyps:
+          ph_len = sum(hyp.trans_vec)
+          hyp_key = ((hyp.ph_start, hyp.ph_end), hyp.trans_vec)
+          if hyp_key not in stacks[ph_len] or stacks[ph_len][hyp_key].logprob < hyp.logprob:
+            stacks[ph_len][hyp_key] = hyp
+  return stacks
+
+
+def right_neighbour_hypothesis(f, h, stacks):
+  '''
+  Checks the expansion of the hypothesis towards the right side of the predecessor phrase
+  ph_len : length of the phrase covered by the hypothesis
+  '''
+  for i in range(h.ph_end, len(f)):
+    for j in range(i + 1, len(f) + 1):
+      expanded_hyps = expand_hypothesis(f,h,i,j)
+      if expanded_hyps:
+        for hyp in expanded_hyps:
+          ph_len = sum(hyp.trans_vec)
+          hyp_key = ((hyp.ph_start, hyp.ph_end), hyp.trans_vec)
+          if hyp_key not in stacks[ph_len] or stacks[ph_len][hyp_key].logprob < hyp.logprob:
+            stacks[ph_len][hyp_key] = hyp
+  return stacks
+
 ####### End of Functions #########
 
 # tm should translate unknown words as-is with probability 1
@@ -56,35 +93,20 @@ for word in set(sum(french,())):
   if (word,) not in tm:
     tm[(word,)] = [models.phrase(word, 0.0)]
 
+hypothesis = namedtuple("hypothesis", "logprob, lm_state, predecessor, phrase, trans_vec, ph_start, ph_end")
+
 sys.stderr.write("Decoding %s...\n" % (opts.input,))
 for f in french:
   stacks = [{} for _ in f] + [{}]
   trans_vec = [ 0 for _ in f ]
   trans_vec = tuple(trans_vec)
-  hypothesis = namedtuple("hypothesis", "logprob, lm_state, predecessor, phrase, trans_vec, ph_start, ph_end")
+  
   initial_hypothesis = hypothesis(0.0, lm.begin(), None, None, trans_vec, 0, 0)
   stacks[0][((0,0), trans_vec)] = initial_hypothesis  #### start from the start tag
   for _, stack in enumerate(stacks[:-1]):
     for h in sorted(stack.values(),key=lambda h: -h.logprob)[:opts.s]: # prune
-      for i in range(0, h.ph_start):
-        for j in range(i+1, h.ph_start + 1):
-          expanded_hyps = expand_hypothesis(f, h, i, j)
-          if expanded_hyps:
-            for hyp in expanded_hyps:
-              index = sum(hyp.trans_vec)
-              hyp_key = ((hyp.ph_start, hyp.ph_end), hyp.trans_vec)
-              if hyp_key not in stacks[index] or stacks[index ][hyp_key].logprob < hyp.logprob:
-                stacks[index][hyp_key] = hyp
-
-      for i in range(h.ph_end, len(f)):
-        for j in range(i+1, len(f) + 1):
-          expanded_hyps = expand_hypothesis(f, h, i, j)
-          if expanded_hyps:
-            for hyp in expanded_hyps:
-              index = sum(hyp.trans_vec)
-              hyp_key = ((hyp.ph_start, hyp.ph_end), hyp.trans_vec)
-              if hyp_key not in stacks[index] or stacks[index][hyp_key].logprob < hyp.logprob:
-                stacks[index][hyp_key] = hyp
+      stacks = left_neighbour_hypothesis(f,h,stacks)
+      stacks = right_neighbour_hypothesis(f,h,stacks)
 
   winner = max(stacks[-1].values(), key=lambda h: h.logprob)
   def extract_english(h): 
