@@ -24,18 +24,25 @@ Sakshi Patil, MSE Computer Science, Johns Hopkins University (https://github.com
 
 ## Code Information -
 
+
 There are two python programs here (-h for usage):
 
-- `decode` translates input sentences from French to English.
+- `decode` translates input sentences from French to English using swap reordering.
+- `decode-ext` translates input sentences from French to English using Cover Decoder by      Hypothesis expansion.
 - `compute-model-score` computes the model score of a translated sentence.
+- `translations` contain the best model translation outputs.
 
 These commands work in a pipeline. For example:
 
-    > python3 reordering_decoder.py | python3 compute-model-score
+    > python3 decode | python3 compute-model-score
+    > python3 decode-ext | python3 compute-model-score
 
-Just to get the translated sentences : 
+To change the number of translations per phrase use -k like the following,
+    > python3 decode -k 32 | python3 compute-model-score
 
-    > python3 reordering_decoder.py
+To change the stack size limit use -s like the following,
+    > python3 decode -s 500 | python3 compute-model-score
+
 
 There is also a module:
 
