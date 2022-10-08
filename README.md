@@ -65,6 +65,7 @@ To change the stack size limit use -s like the following,
 
     > python3 reordering_decoder.py -s 500 | python3 compute-model-score
 
+Similar options are also available for the Coverage decoder. 
 
 There is also a module:
 
