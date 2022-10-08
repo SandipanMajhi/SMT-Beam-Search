@@ -19,7 +19,7 @@ Stack Size limit s (k = 32)     Logprob (tm+lm)
     1500                        -1240.8273
     2000                        -1240.3612
 ```
-[!plot](Figure_1.png)
+[! plot] (./Figure_1.png)
 
 ### Swap Reordering Decoder Results :
 ```
