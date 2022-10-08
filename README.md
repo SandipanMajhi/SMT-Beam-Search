@@ -19,7 +19,8 @@ Stack Size limit s (k = 32)     Logprob (tm+lm)
     1500                        -1240.8273
     2000                        -1240.3612
 ```
-[!ScreenShot] (https://raw.githubusercontent.com/SandipanMajhi/SMT-Beam-Search/blob/main/Figure_1.png)
+![ScreenShot](Figure_1.png)
+![ScreenShot](Figure_3.png)
 
 ### Swap Reordering Decoder Results :
 ```
@@ -30,6 +31,7 @@ Stack Size limit s (k = 32)     Logprob (tm+lm)
    20   -1300.526
    25   -1300.526
 ```
+![ScreenShot](Figure_2.png)
 
 ### Best Results Comparison :
 ```
