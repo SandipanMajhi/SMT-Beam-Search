@@ -18,7 +18,6 @@ Stack Size limit s (k = 32)     Logprob (tm+lm)
     1000                        -1242.3797
     1500                        -1240.8273
     2000                        -1240.3612
-
 ```
 
 ### Swap Reordering Decoder Results :
@@ -29,8 +28,6 @@ Stack Size limit s (k = 32)     Logprob (tm+lm)
    15   -1301.366
    20   -1300.526
    25   -1300.526
-
-
 ```
 
 ### Best Results Comparison :
@@ -39,8 +36,6 @@ Stack Size limit s (k = 32)     Logprob (tm+lm)
     Baseline                    -1354.6421
     Swap Reordering Model       -1300.526
     Cover Model                 -1240.3612
-
-
 ```
 
 ## Collaborators -
