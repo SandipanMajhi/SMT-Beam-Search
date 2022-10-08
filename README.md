@@ -33,6 +33,16 @@ Stack Size limit s (k = 32)     Logprob (tm+lm)
 
 ```
 
+### Best Results Comparison :
+```
+    Model                       Logprob (tm+lm)
+    Baseline                    -1354.6421
+    Swap Reordering Model       -1300.526
+    ***Cover Model***                 ***-1240.3612***
+
+
+```
+
 ## Collaborators -
 Sandipan Majhi, MSE Computer Science, Johns Hopkins University\
 Sakshi Patil, MSE Computer Science, Johns Hopkins University (https://github.com/skpatil1301)
