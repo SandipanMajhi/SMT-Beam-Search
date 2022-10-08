@@ -34,8 +34,8 @@ There are two python programs here (-h for usage):
 
 These commands work in a pipeline. For example:
 
-    > python3 decode | python3 compute-model-score
-    > python3 decode-ext | python3 compute-model-score
+    > python3 reordering_decoder.py | python3 compute-model-score
+    > python3  | python3 compute-model-score
 
 To change the number of translations per phrase use -k like the following,
     > python3 decode -k 32 | python3 compute-model-score
